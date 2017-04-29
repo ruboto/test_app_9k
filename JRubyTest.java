@@ -1,5 +1,9 @@
 public class JRubyTest {
     public static void main(String... args) {
+        new JRubyTest().test();
+    }
+
+    private void test() {
         System.setProperty("jruby.backtrace.style", "normal"); // normal raw full mri
         System.setProperty("jruby.bytecode.version", "1.6");
         org.jruby.embed.ScriptingContainer c = new org.jruby.embed.ScriptingContainer(org.jruby.embed.LocalContextScope.SINGLETON, org.jruby.embed.LocalVariableBehavior.TRANSIENT);
@@ -17,7 +21,9 @@ public class JRubyTest {
         // System.setProperty("jruby.class.cache.path", appContext.getDir("dex", 0).getAbsolutePath());
         // System.setProperty("java.io.tmpdir", appContext.getCacheDir().getAbsolutePath());
 
-        c.put("MyConstant", c.runScriptlet("Java::JRubyTest"));
+        c.put("MyConstant", c.runScriptlet("Java::Default::JRubyTest"));
         c.runScriptlet("puts MyConstant");
+        c.runScriptlet("class MyConstant ; def myMethod ; puts 'myMethod called' ; end ; end");
+        c.runRubyMethod(Object.class, this, "myMethod");
     }
 }
