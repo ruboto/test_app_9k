@@ -1,0 +1,3 @@
+---
+ruby_version: '2.2'
+heap_alloc: 50
