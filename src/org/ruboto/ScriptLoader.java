@@ -15,10 +15,13 @@ public class ScriptLoader {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         int maxLookBack = Math.min(8, stackTraceElements.length);
         for(int i = 0; i < maxLookBack ; i++){
+            System.out.println("isCalledFromJRuby: " + i + ": " + stackTraceElements[i].getClassName());
             if (stackTraceElements[i].getClassName().startsWith("org.jruby.javasupport.JavaMethod")) {
+                System.out.println("isCalledFromJRuby: true");
                 return true;
             }
         }
+        System.out.println("isCalledFromJRuby: false");
         return false;
     }
 
@@ -69,7 +72,7 @@ public class ScriptLoader {
                                 Log.d("Script has separate Java class");
                                 rubyClass = JRubyAdapter.runScriptlet("Java::" + component.getClass().getName());
                             }
-                            Log.d("Set class: " + rubyClass);
+                            Log.d("Set class: " + component.getScriptInfo().getRubyClassName() + ": " + rubyClass);
                             JRubyAdapter.put(component.getScriptInfo().getRubyClassName(), rubyClass);
                             // FIXME(uwe):  Collect these threads in a ThreadGroup ?
                             Thread t = new Thread(null, new Runnable(){

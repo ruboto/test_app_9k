@@ -205,25 +205,42 @@ public class RubotoActivity extends android.app.Activity implements org.ruboto.R
 */
 
   public void onCreate(android.os.Bundle savedInstanceState) {
-    if (ScriptLoader.isCalledFromJRuby()) {super.onCreate(savedInstanceState); return;}
-    if (preOnCreate(savedInstanceState)) {super.onCreate(savedInstanceState); return;};
-if (JRubyAdapter.isInitialized() && scriptInfo.isReadyToLoad()) {
+    System.out.println("RubotoActivity: onCreate:");
+    if (ScriptLoader.isCalledFromJRuby()) {
+        System.out.println("onCreate: isCalledFromJRuby: call super and return");
+        super.onCreate(savedInstanceState); return;
+    }
+    if (preOnCreate(savedInstanceState)) {
+        System.out.println("onCreate: preOnCreate: call super and return");
+        super.onCreate(savedInstanceState); return;
+    };
+    if (JRubyAdapter.isInitialized() && scriptInfo.isReadyToLoad()) {
+        System.out.println("onCreate: isReadyToLoad: loadScript");
         ScriptLoader.loadScript(this);
     } else {
-        {super.onCreate(savedInstanceState); return;}
+        System.out.println("onCreate: not initialized: call super and return");
+        super.onCreate(savedInstanceState); return;
     }
 
     String rubyClassName = scriptInfo.getRubyClassName();
-    if (rubyClassName == null) {super.onCreate(savedInstanceState); return;}
+    if (rubyClassName == null) {
+        System.out.println("onCreate: rubyClassName is null: call super and return");
+        super.onCreate(savedInstanceState); return;
+    }
+    System.out.println("onCreate: getRubyInstance: " + scriptInfo.getRubyInstance());
     if ((Boolean)JRubyAdapter.runScriptlet(rubyClassName + ".instance_methods(false).any?{|m| m.to_sym == :onCreate}")) {
+      System.out.println("onCreate: call local onCreate");
       JRubyAdapter.runRubyMethod(scriptInfo.getRubyInstance(), "onCreate", savedInstanceState);
     } else {
       if ((Boolean)JRubyAdapter.runScriptlet(rubyClassName + ".instance_methods(false).any?{|m| m.to_sym == :on_create}")) {
+        System.out.println("onCreate: call local on_create");
         JRubyAdapter.runRubyMethod(scriptInfo.getRubyInstance(), "on_create", savedInstanceState);
       } else {
         if ((Boolean)JRubyAdapter.runScriptlet(rubyClassName + ".instance_methods(true).any?{|m| m.to_sym == :on_create}")) {
+          System.out.println("onCreate: call ancestor on_create");
           JRubyAdapter.runRubyMethod(scriptInfo.getRubyInstance(), "on_create", savedInstanceState);
         } else {
+          System.out.println("onCreate: call ancestor onCreate");
           JRubyAdapter.runRubyMethod(scriptInfo.getRubyInstance(), "onCreate", savedInstanceState);
         }
       }

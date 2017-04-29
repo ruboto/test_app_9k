@@ -1,3 +1,5 @@
+puts "loading ruby activity source!!!"
+
 require 'ruboto/widget'
 require 'ruboto/util/toast'
 
@@ -5,8 +7,12 @@ ruboto_import_widgets :Button, :LinearLayout, :TextView
 
 # http://xkcd.com/378/
 
+puts "Java::OrgRubotoTest_app::RubotoTestAppActivity: #{Java::OrgRubotoTest_app::RubotoTestAppActivity}"
+puts "RubotoTestAppActivity: #{RubotoTestAppActivity}"
+
 class RubotoTestAppActivity
   def onCreate(bundle)
+    puts "Ruby onCreate called!!!!!!!"
     super
     set_title 'Domo arigato, Mr Ruboto!'
 
