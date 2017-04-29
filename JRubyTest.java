@@ -6,7 +6,6 @@ public class JRubyTest {
     private void test() {
         System.setProperty("jruby.backtrace.style", "normal"); // normal raw full mri
         System.setProperty("jruby.bytecode.version", "1.6");
-        org.jruby.embed.ScriptingContainer c = new org.jruby.embed.ScriptingContainer(org.jruby.embed.LocalContextScope.SINGLETON, org.jruby.embed.LocalVariableBehavior.TRANSIENT);
         System.setProperty("jruby.compat.version", "RUBY2_2"); // RUBY1_9 is the default in JRuby 1.7
         System.setProperty("jruby.compile.mode", "OFF"); // OFF OFFIR JITIR? FORCE FORCEIR
         System.setProperty("jruby.interfaces.useProxy", "true");
@@ -20,6 +19,8 @@ public class JRubyTest {
         System.setProperty("jruby.ji.upper.case.package.name.allowed", "true");
         // System.setProperty("jruby.class.cache.path", appContext.getDir("dex", 0).getAbsolutePath());
         // System.setProperty("java.io.tmpdir", appContext.getCacheDir().getAbsolutePath());
+
+        org.jruby.embed.ScriptingContainer c = new org.jruby.embed.ScriptingContainer(org.jruby.embed.LocalContextScope.CONCURRENT, org.jruby.embed.LocalVariableBehavior.TRANSIENT);
 
         c.put("MyConstant", c.runScriptlet("Java::Default::JRubyTest"));
         c.runScriptlet("puts MyConstant");
