@@ -1,3 +1,8 @@
+/*
+    Test using
+    javac -cp .:libs/jruby-core-9.1.9.0.SNAPSHOT.jar:libs/jruby-stdlib-9.1.9.0.SNAPSHOT.jar JRubyTest
+    java -cp .:libs/jruby-core-9.1.9.0.SNAPSHOT.jar:libs/jruby-stdlib-9.1.9.0.SNAPSHOT.jar JRubyTest
+/*
 public class JRubyTest {
     public static void main(String... args) {
         new JRubyTest().test();

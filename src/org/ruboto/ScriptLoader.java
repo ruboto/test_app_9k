@@ -74,6 +74,13 @@ public class ScriptLoader {
                             }
                             Log.d("Set class: " + component.getScriptInfo().getRubyClassName() + ": " + rubyClass);
                             JRubyAdapter.put(component.getScriptInfo().getRubyClassName(), rubyClass);
+                            Log.d("Set class: " + JRubyAdapter.get(component.getScriptInfo().getRubyClassName()));
+                            JRubyAdapter.runScriptlet("puts " + component.getScriptInfo().getRubyClassName() + " rescue puts $!");
+
+                            JRubyAdapter.put("$" + component.getScriptInfo().getRubyClassName(), rubyClass);
+                            JRubyAdapter.runScriptlet(component.getScriptInfo().getRubyClassName() + " = $" + component.getScriptInfo().getRubyClassName());
+                            JRubyAdapter.runScriptlet("puts " + component.getScriptInfo().getRubyClassName() + " rescue puts $!");
+
                             // FIXME(uwe):  Collect these threads in a ThreadGroup ?
                             Thread t = new Thread(null, new Runnable(){
                                 public void run() {
